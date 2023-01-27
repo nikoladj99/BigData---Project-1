@@ -37,14 +37,12 @@ result = grouped_df.select("user", "count")
 result.show(10, False)
 result.write.format("csv").option("header", True).save("output/user_area_period")
 
-
 # Grupisanje po lokacijama korisnika
 print("Podaci grupisani po lokacijama, za odredjenu oblast i odrjenji vremenski interval")
 grouped_df = filtered_df.groupBy("location_id").count().alias("count")
 result = grouped_df.select("location_id", "count")
 result.show()
 result.write.format("csv").option("header", True).save("output/location_area_period")
-
 
 # Dodavanje vestacki generisane kolone - koliko je korisnik proveo vremena na nekoj lokaciji
 df = df.withColumn("time_spent", floor(rand() * 360))
@@ -65,7 +63,6 @@ print("Statisticki parametri za podatke grupisane po lokacijama i datumima:")
 grouped_df.show()
 grouped_df.write.format("csv").option("header", True).save("output/stastics_location_date")
 
-
 # Grupisanje po lokaciji/oblasti i vremenu za odredjenog korisnika
 grouped_df = df.groupBy("user", "location_id", "check_in_date").agg(
     min("time_spent").alias("min_time_spent"),
@@ -77,7 +74,6 @@ print("Statisticki parametri za podatke koji su grupisani po lokacijama i datumi
 grouped_df.show()
 grouped_df.write.format("csv").option("header", True).save("output/stastics_user_location_date")
 
-
 # Najposecenija lokacija svakog korisnika
 print("Najposecenija lokacija za svakog korisnika:")
 user_location_count = df.groupBy("user", "location_id").count()
@@ -88,7 +84,6 @@ max_visits = user_location_count.groupBy("user").agg(
 max_visits.show()
 max_visits.write.format("csv").option("header", True).save("output/user_max_visits")
 
-
 # Datum kada je neka lokacija najposecenija
 print("Datumi kada je svaka od lokacija bila najposecenija:")
 location_date_count = df.groupBy("location_id", "check_in_date").count()
@@ -98,7 +93,6 @@ max_visits = location_date_count.groupBy("location_id").agg(
 )
 max_visits.show()
 max_visits.write.format("csv").option("header", True).save("output/location_max_visits")
-
 
 # Prosecno vreme provedeno na svakoj lokaciji
 print("Prosecno vreme provedeno na svakoj lokaciji:")
